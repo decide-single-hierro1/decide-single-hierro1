@@ -1,0 +1,5 @@
+<type>: <subject> (50 char limit)
+
+<body> (not mandatory, 72 char limit)
+
+<commit co-authors> (if exists)
