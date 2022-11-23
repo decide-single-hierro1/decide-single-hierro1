@@ -50,9 +50,6 @@ def getvotes(update:Update,context:CallbackContext):
         raise Http404
 
 
-def vote(update:Update, context: CallbackContext):
-   	# https://docs.python-telegram-bot.org/en/v20.0a5/telegram.bot.html#telegram.Bot.send_poll
-    pass
 
 
 def unknown(update:Update,context:CallbackContext):
