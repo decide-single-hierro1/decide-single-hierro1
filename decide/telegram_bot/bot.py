@@ -1,4 +1,8 @@
 from django.conf import settings
+from django.http import Http404
+
+from base import mods
+
 from telegram.ext.updater import Updater
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
@@ -35,8 +39,16 @@ def help(update:Update,context:CallbackContext):
 
 def getvotes(update:Update,context:CallbackContext):
 	# Display generated graphs?
-    # https://docs.python-telegram-bot.org/en/v20.0a5/telegram.bot.html#telegram.Bot.send_poll
-	pass
+    
+    try:
+        vid = context.args[0]
+        r = mods.get('voting', params={'id': vid})
+        if len(r) == 0:
+            update.message.reply_text("No se encontró una votación para los datos suministrados.")
+        update.message.reply_text(r)
+    except:
+        raise Http404
+
 
 def vote(update:Update, context: CallbackContext):
    	# https://docs.python-telegram-bot.org/en/v20.0a5/telegram.bot.html#telegram.Bot.send_poll
