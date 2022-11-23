@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbvue/lib/css/mdb.min.css">
+{% endblock %}
+
+{% block content %}
+    <div id="app-visualizer">
+        <!-- Navbar -->
+        <b-navbar type="dark" variant="secondary">
+            <b-navbar-brand tag="h1">Decide</b-navbar-brand>
+        </b-navbar>
+
+        <div class="voting container">
+         <h1>Dashboard</h1>
+         <div class="d-flex flex-wrap col-12">
+         <h2 class="col-12">Todas las votaciones creadas</h2>
+         <mdb-bar-chart
+    class="col-6"
+      :data="barChartData"
+      :options="barChartOptions"
+      
+      :height="300"
+    ></mdb-bar-chart>
+    
+    <mdb-doughnut-chart
+    class="col-6"
+      :data="doughnutChartData"
+      :options="doughnutChartOptions"
+    
+      :height="300"
+    ></mdb-doughnut-chart>
+         
+         </div>
+        
+            </div>
+    
+        </div>
+   
+{% endblock %}
+
+{% block extrabody %}
+    <!-- Vuejs -->
+    <script src="https://unpkg.com/vue@2.7.10"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mdbvue/lib/index.js"></script>
+    
+    <script>
+       
+        var votings ={{votings|safe}};
+        var unstarted ={{unstarted|safe}};
+        var started ={{started|safe}};
+        var finished ={{finished|safe}};
+        var closedV ={{closed|safe}};
+        
+        var app = new Vue({
+            delimiters: ['[[', ']]'],
+            el: '#app-visualizer',
+            components:{
+                mdbConteiner: mdbvue.mdbConteiner,
+                mdbBarChart: mdbvue.mdbBarChart,
+                mdbDoughnutChart: mdbvue.mdbDoughnutChart,
+            },
+             data: {
+                votings: votings,
+                unstarted :unstarted,
+                started : started,
+                finished :finished,
+                closed:closedV,
+                 barChartData: {
+                  labels: [
+                    "Red",
+                    "Blue",
+                    "Yellow",
+                    "Green",
+                    "Purple",
+                    "Orange"
+                  ],
+                  datasets: [
+                    {
+                    label : "Por estado de votacion (Nº de votaciones)",
+                      data: [12, 19, 3, 5, 2, 3],
+                      backgroundColor: [
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(54, 162, 235, 0.2)",
+                        "rgba(255, 206, 86, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(153, 102, 255, 0.2)",
+                        "rgba(255, 159, 64, 0.2)"
+                      ],
+                      borderColor: [
+                        "rgba(255,99,132,1)",
+                        "rgba(54, 162, 235, 1)",
+                        "rgba(255, 206, 86, 1)",
+                        "rgba(75, 192, 192, 1)",
+                        "rgba(153, 102, 255, 1)",
+                        "rgba(255, 159, 64, 1)"
+                      ],
+                      borderWidth: 1
+                    }
+                  ]
+                },
+                barChartOptions: {
+                  responsive: false,
+                  maintainAspectRatio: false,
+                  scales: {
+                    xAxes: [
+                      {
+                        barPercentage: 1,
+                        gridLines: {
+                          display: true,
+                          color: "rgba(0, 0, 0, 0.1)"
+                        }
+                      }
+                    ],
+                    yAxes: [
+                      
+                      {
+                      ticks: {
+              beginAtZero: true
+            },
+                        gridLines: {
+                          display: true,
+                          color: "rgba(0, 0, 0, 0.1)"
+                        }
+                      }
+                    ]
+                  }
+                },
+                doughnutChartData: {
+                  labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
+                  datasets: [
+                    {
+                      data: [300, 50, 100, 40, 120],
+                      backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD",
+                        "#FDB45C",
+                        "#949FB1",
+                        "#4D5360"
+                      ],
+                      hoverBackgroundColor: [
+                        "#FF5A5E",
+                        "#5AD3D1",
+                        "#FFC870",
+                        "#A8B3C5",
+                        "#616774"
+                      ]
+                    }
+                  ]
+                },
+                doughnutChartOptions: {
+                  responsive: false,
+                  maintainAspectRatio: false
+                },
+            },
+                 beforeMount(){
+                  let labels_chart= [];
+                  let labels_bar_chart= [];
+                  let data_chart= [];
+                  let data_bar_chart= [];
+                  let colors = [];
+                  let hovers = [];
+                  
+                  if (this.started!=null && this.unstarted !=null&& this.closed!=null && this.finished!=null){
+                data_bar_chart.push(this.unstarted);
+                data_chart.push((this.unstarted*100)/this.total_votings );
+                labels_bar_chart.push('sin empezar');
+                labels_chart.push('sin empezar'+ ' (%)');
+                let color = this.dynamicColors();
+                colors.push(color+', 1)');
+                hovers.push(color+', 0.5)');
+                data_bar_chart.push(this.started);
+                data_chart.push((this.started*100)/this.total_votings );
+                labels_bar_chart.push('empezadas');
+                labels_chart.push('empezadas'+ ' (%)');
+                let color1 = this.dynamicColors();
+                colors.push(color1+', 1)');
+                hovers.push(color1+', 0.5)');
+                data_bar_chart.push(this.finished);
+                data_chart.push((this.finished*100)/this.total_votings );
+                labels_bar_chart.push('finalizadas');
+                labels_chart.push('finalizadas'+ ' (%)');
+                let color2 = this.dynamicColors();
+                colors.push(color2+', 1)');
+                hovers.push(color2+', 0.5)');
+                data_bar_chart.push(this.closed);
+                data_chart.push((this.closed*100)/this.total_votings );
+                labels_bar_chart.push('cerradas');
+                labels_chart.push('cerradas'+ ' (%)');
+                let color3 = this.dynamicColors();
+                colors.push(color3+', 1)');
+                hovers.push(color3+', 0.5)');
+                this.doughnutChartData.datasets[0].data = data_chart;
+                this.doughnutChartData.labels = labels_chart;
+                this.doughnutChartData.datasets[0].backgroundColor =colors;
+                this.doughnutChartData.datasets[0].hoverBackgroundColor =hovers;
+                this.barChartData.datasets[0].data = data_bar_chart;
+                this.barChartData.labels = labels_bar_chart;
+                this.barChartData.datasets[0].backgroundColor =hovers;
+                this.barChartData.datasets[0].borderColor =colors;
+           } },
+            computed:{
+                total_votings(){
+                    return (this.started+this.unstarted +this.closed+this.finished)
+                },
+            },
+            methods:{
+                 dynamicColors() {
+                    var r = Math.floor(Math.random() * 255);
+                    var g = Math.floor(Math.random() * 255);
+                    var b = Math.floor(Math.random() * 255);
+                  
+                    return "rgba(" + r + "," + g + "," + b;
+                },
+            }
+        })
+      
+        
+    </script>
+</body>
+{% endblock %}
