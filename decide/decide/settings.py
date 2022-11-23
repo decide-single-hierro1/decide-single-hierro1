@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'gateway',
+    'telegram_bot',
 ]
 
 REST_FRAMEWORK = {
