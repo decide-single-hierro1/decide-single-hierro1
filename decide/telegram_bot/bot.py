@@ -1,4 +1,3 @@
-from django.db import models
 from django.conf import settings
 from telegram.ext.updater import Updater
 from telegram.update import Update
@@ -9,7 +8,19 @@ from telegram.ext.filters import Filters
 
 KEY = settings.TELEGRAM_APIKEY_BOT
 
-updater = Updater(KEY,use_context=True)
+def startBot():
+    updater = Updater(KEY,use_context=True)
+    updater.dispatcher.add_handler(CommandHandler('start', start))
+    updater.dispatcher.add_handler(CommandHandler('help', help))
+    updater.dispatcher.add_handler(CommandHandler('getvotes', getvotes))
+    updater.dispatcher.add_handler(CommandHandler('vote', vote))
+    updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))  # Filters out unknown commands
+    
+    # Filters out unknown messages.
+    updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown_text))
+
+    updater.start_polling()
+    updater.idle()
 
 def start(update: Update,context: CallbackContext):
 	update.message.reply_text('''Gracias por usar el bot de decide.
@@ -40,13 +51,3 @@ def unknown_text(update:Update,context:CallbackContext):
 	update.message.reply_text('Lo siento, no reconozco el significado de:'+
                              update.message.text)
 
-updater.dispatcher.add_handler(CommandHandler('start',start))
-updater.dispatcher.add_handler(CommandHandler('help',help))
-updater.dispatcher.add_handler(CommandHandler('getvotes',getvotes))
-updater.dispatcher.add_handler(CommandHandler('vote',vote))
-updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))  # Filters out unknown commands
-  
-# Filters out unknown messages.
-updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown_text))
-
-updater.start_polling()
