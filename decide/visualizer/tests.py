@@ -15,8 +15,8 @@ class VisualizerTests(BaseTestCase):
        self.assertEqual(response.status_code, 200)
 
     def test_votacion_existente(self):
-    response = self.client.get('/visualizer/1/')
-    self.assertEqual(response.status_code, 200)
+        response = self.client.get('/visualizer/1/')
+        self.assertEqual(response.status_code, 200)
 
     def test_votacion_no_existente(self):
         response = self.client.get('/visualizer/999/')
@@ -24,7 +24,7 @@ class VisualizerTests(BaseTestCase):
         
     def test_num_votos(self):
         num = view.votesOfVoting(1)
-        res = 3;
+        res = 3
         self.assertEqual(res, num)
 
     def test_abstenciones(self):
