@@ -2,7 +2,7 @@ from base.tests import BaseTestCase
 import visualizer.metrics as metrics
 
 class VisualizerTests(BaseTestCase):
-    # data = ['visualizer/migrations/prueba.json', ]
+    data = ['visualizer/migrations/prueba.json',]
     
     def setUp(self):
         super().setUp()
