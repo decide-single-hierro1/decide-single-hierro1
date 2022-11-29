@@ -35,7 +35,7 @@ class VisualizerQuestion(TemplateView):
         
         try:
             r = Voting.objects.filter(question = vid).get()
-            
+            # TODO
             voting = json.loads(json.dumps(r[0]), object_hook=lambda d: SimpleNamespace(**d))
             numberOptions = len(voting.postproc) 
             res = [0] * numberOptions
