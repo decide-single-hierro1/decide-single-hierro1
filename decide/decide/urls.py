@@ -27,7 +27,6 @@ urlpatterns = [
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
     url(r'^', include('django_telegrambot.urls')),
-    path('telegram_bot/', include('telegram_bot.urls')),
 ]
 
 for module in settings.MODULES:
