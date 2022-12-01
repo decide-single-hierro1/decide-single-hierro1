@@ -3,6 +3,8 @@ from django.http import Http404
 
 from base import mods
 
+from django_telegrambot.apps import DjangoTelegramBot
+
 from telegram.ext.updater import Updater
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
@@ -10,21 +12,21 @@ from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
 
+import logging
+logger = logging.getLogger(__name__)
+
 KEY = settings.TELEGRAM_APIKEY_BOT
 
-def startBot():
-    updater = Updater(KEY,use_context=True)
-    updater.dispatcher.add_handler(CommandHandler('start', start))
-    updater.dispatcher.add_handler(CommandHandler('help', help))
-    updater.dispatcher.add_handler(CommandHandler('getvotes', getvotes))
-    updater.dispatcher.add_handler(CommandHandler('vote', vote))
-    updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown))  # Filters out unknown commands
+def main():
+    dp = DjangoTelegramBot.dispatcher
+    dp.add_handler(CommandHandler('start', start))
+    dp.add_handler(CommandHandler('help', help))
+    dp.add_handler(CommandHandler('getvotes', getvotes))
+    dp.add_handler(MessageHandler(Filters.command, unknown))  # Filters out unknown commands
     
-    # Filters out unknown messages.
-    updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown_text))
+    dp.add_handler(MessageHandler(Filters.text, unknown_text)) # Filters out unknown messages.
 
-    updater.start_polling()
-    updater.idle()
+    dp.add_error_handler(error) # Error handler
 
 def start(update: Update,context: CallbackContext):
 	update.message.reply_text('''Gracias por usar el bot de decide.
@@ -49,9 +51,6 @@ def getvotes(update:Update,context:CallbackContext):
     except:
         raise Http404
 
-
-
-
 def unknown(update:Update,context:CallbackContext):
 	update.message.reply_text('Lo siento, no reconozco el comando:'+
                              update.message.text)
@@ -59,4 +58,7 @@ def unknown(update:Update,context:CallbackContext):
 def unknown_text(update:Update,context:CallbackContext):
 	update.message.reply_text('Lo siento, no reconozco el significado de:'+
                              update.message.text)
+
+def error(bot, update, error):
+    logger.warn('Update "%s" caused error "%s"' % (update, error))
 

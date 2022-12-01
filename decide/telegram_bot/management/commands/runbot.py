@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
-from telegram_bot import bot
+from decide.telegram_bot import telegrambot
 
 
 class Command(BaseCommand):
     help = 'Runs telegram bot dispatcher'
     
     def handle(self, *args, **options):
-        bot.startBot()
+        telegrambot.main()
