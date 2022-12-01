@@ -13,7 +13,7 @@ def unstartedVotings():
     return Voting.objects.filter(start_date__isnull=True).count()
 
 def startedVotings():
-    return Voting.objects.filter(start_date__isnull=False).count()
+    return Voting.objects.filter(start_date__isnull=False, end_date__isnull=True).count()
 
 def finishedVotings():
     return Voting.objects.filter(end_date__isnull=False, tally__isnull=False).count()
