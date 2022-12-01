@@ -1,0 +1,176 @@
+[
+    {
+        "model": "census.census",
+        "pk": 1,
+        "fields": {
+            "voting_id": 1,
+            "voter_id": 1
+        }
+    },
+    {
+        "model": "census.census",
+        "pk": 2,
+        "fields": {
+            "voting_id": 1,
+            "voter_id": 2
+        }
+    },
+    {
+        "model": "census.census",
+        "pk": 3,
+        "fields": {
+            "voting_id": 1,
+            "voter_id": 3
+        }
+    },
+    {
+        "model": "census.census",
+        "pk": 4,
+        "fields": {
+            "voting_id": 1,
+            "voter_id": 4
+        }
+    },
+    {
+        "model": "census.census",
+        "pk": 5,
+        "fields": {
+            "voting_id": 2,
+            "voter_id": 1
+        }
+    },
+    {
+        "model": "census.census",
+        "pk": 6,
+        "fields": {
+            "voting_id": 5,
+            "voter_id": 1
+        }
+    },
+    {
+        "model": "census.census",
+        "pk": 7,
+        "fields": {
+            "voting_id": 5,
+            "voter_id": 2
+        }
+    },
+    {
+        "model": "voting.voting",
+        "pk": 1,
+        "fields": {
+            "name": "Prueba",
+            "desc": "Votacion de prueba",
+            "question": 1,
+            "start_date": "2022-01-10T16:30:21.000Z",
+            "end_date": "2022-01-10T20:00:00.000Z",
+            "pub_key": 1,
+            "tally": [
+                1,
+                2,
+                1,
+            ],
+            "postproc": [
+                {
+                    "votes": 2,
+                    "number": 4,
+                    "option": "A",
+                    "postproc": 2
+                },
+                {
+                    "votes": 1,
+                    "number": 1,
+                    "option": "B",
+                    "postproc": 1
+                },
+            ],
+            "auths": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "voting.voting",
+        "pk": 2,
+        "fields": {
+            "name": "Prueba2",
+            "desc": "Votacion de prueba numero 2",
+            "question": 2,
+            "start_date": null,
+            "end_date": null,
+            "pub_key": 2,
+            "tally": null,
+            "postproc": null,
+            "auths": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "voting.voting",
+        "pk": 3,
+        "fields": {
+            "name": "Prueba 3",
+            "desc": "Votacion de prueba numero 3",
+            "question": 3,
+            "start_date": "2022-01-02T11:50:10.234Z",
+            "end_date": null,
+            "pub_key": 9,
+            "tally": null,
+            "postproc": null,
+            "auths": [
+                1
+            ]
+        }
+    },
+  {
+        "model": "voting.voting",
+        "pk": 4,
+        "fields": {
+            "name": "Prueba 4",
+            "desc": "Votacion de prueba numero 4",
+            "question": 4,
+            "start_date": "2022-01-05T10:40:22.457Z",
+            "end_date": "2022-01-07T19:10:45.234Z",
+            "pub_key": 9,
+            "tally": null,
+            "postproc": null,
+            "auths": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "voting.voting",
+        "pk": 5,
+        "fields": {
+            "name": "Prueba 5",
+            "desc": "Votacion de prueba numero 5",
+            "question": 5,
+            "start_date": "2022-01-05T10:40:22.457Z",
+            "end_date": "2022-01-07T19:10:45.234Z",
+            "pub_key": 10,
+            "tally": [
+                1,
+                2
+            ],
+            "postproc": [
+                {
+                    "votes": 1,
+                    "number": 1,
+                    "option": "A",
+                    "postproc": 2
+                },
+                {
+                    "votes": 1,
+                    "number": 1,
+                    "option": "B",
+                    "postproc": 1
+                },
+            ],
+            "auths": [
+                1
+            ]
+        }
+    },
+]

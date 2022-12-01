@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbvue/lib/css/mdb.min.css">
+{% endblock %}
+
+{% block content %}
+    <div id="app-visualizer">
+        <!-- Navbar -->
+        <b-navbar type="dark" variant="secondary">
+            <b-navbar-brand tag="h1">Decide</b-navbar-brand>
+        </b-navbar>
+
+        <div class="voting container">
+          
+                <div class="small d-flex flex-wrap col-12">
+     
+
+  
+    
+    <mdb-bar-chart
+    class="col-6"
+      :data="barChartData"
+      :options="barChartOptions"
+      
+      :height="300"
+    ></mdb-bar-chart>
+
+  </div>
+            </div>
+    
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrabody %}
+    <!-- Vuejs -->
+    <script src="https://unpkg.com/vue@2.7.10"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mdbvue/lib/index.js"></script>
+    
+    <script>
+       
+        var votings = {{votings|safe}};
+        var abstentions = {{abstentions|safe}};
+        var names = {{names|safe}};
+        console.log(JSON.parse(votings[0]));
+        console.log(abstentions);
+        var app = new Vue({
+            delimiters: ['[[', ']]'],
+            el: '#app-visualizer',
+            components:{
+                mdbConteiner: mdbvue.mdbConteiner,
+                mdbDoughnutChart: mdbvue.mdbDoughnutChart,
+                mdbBarChart: mdbvue.mdbBarChart,
+            },
+             data: {
+                votings: votings,
+                abstentions: abstentions,
+                names:names,
+                total_votes:0,
+                 barChartData: {
+                  labels: [
+                    "Red",
+                    "Blue",
+                    "Yellow",
+                    "Green",
+                    "Purple",
+                    "Orange"
+                  ],
+                  datasets: [
+                    
+                  ]
+                },
+                barChartOptions: {
+                  responsive: false,
+                  maintainAspectRatio: false,
+                  scales: {
+                    xAxes: [
+                      {
+                        barPercentage: 1,
+                        gridLines: {
+                          display: true,
+                          color: "rgba(0, 0, 0, 0.1)"
+                        }
+                      }
+                    ],
+                    yAxes: [
+                      
+                      {
+                      ticks: {
+              beginAtZero: true
+            },
+                        gridLines: {
+                          display: true,
+                          color: "rgba(0, 0, 0, 0.1)"
+                        }
+                      }
+                    ]
+                  }
+                }
+            },
+            beforeMount(){
+                 
+                this.barChartData.datasets.slice(0,1);
+                let labels_bar_chart= [];
+                let data_bar_chart= [];
+                let colors = [];
+                let hovers = [];
+                let total_votes = 0;
+
+                this.votings.forEach((voting, index) => {
+                  let color = this.dynamicColors();
+                  colors.push(color+', 1)');
+                  hovers.push(color+', 0.5)');
+                  labels_bar_chart.push(names[index]+ ' (nº de votos)');
+                  data_bar_chart.push(voting);
+                });
+                labels_bar_chart.push('abstenciones'+ ' (nº de votos)');
+                data_bar_chart.push(this.abstentions );
+                let color = this.dynamicColors();
+                colors.push(color+', 1)');
+                hovers.push(color+', 0.5)');        
+                let data= {};
+                data.label =  "Nº de votos";   
+                data.data= data_bar_chart ;
+                data.backgroundColor= colors;
+                data.borderColor= hovers;
+                data.borderWidth=1;
+                this.barChartData.datasets.push(data);
+                this.barChartData.labels=labels_bar_chart;
+           
+
+                
+           },
+           
+            methods:{
+                 dynamicColors() {
+                    var r = Math.floor(Math.random() * 255);
+                    var g = Math.floor(Math.random() * 255);
+                    var b = Math.floor(Math.random() * 255);
+                  
+                    return "rgba(" + r + "," + g + "," + b;
+                },
+            }
+        })
+      
+        
+    </script>
+</body>
+{% endblock %}
