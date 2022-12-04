@@ -39,13 +39,43 @@
     
       :height="300"
     ></mdb-doughnut-chart>
-         
+
+        <h3>Listado de Votaciones</h3>
+        
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Fecha de Inicio</th>
+              <th>Fecha de Fin</th>
+            </tr>
+        
+          </thead>
+          <tbody>
+          
+            <tr v-for="voting in votings" :key="voting.id">
+              <th><a :href="'/visualizer/' + voting.id">[[voting.id]]</a></th>
+              <td>[[voting.name]]</td>
+              <td>[[voting.start_date]]</td>
+    
+              <td>[[voting.end_date]]</td>
+             <!-- <td>[[voting.tally]]</td>-->
+            </tr>
+          </tbody>
+       
+          </tfoot>
+      </table> 
+      
+
+      <div class="small d-flex flex-wrap col-12"> 
+    </div>
          </div>
         
             </div>
     
         </div>
-   
+ 
 {% endblock %}
 
 {% block extrabody %}
@@ -62,7 +92,7 @@
         var started ={{started|safe}};
         var finished ={{finished|safe}};
         var closedV ={{closed|safe}};
-        
+      
         var app = new Vue({
             delimiters: ['[[', ']]'],
             el: '#app-visualizer',
@@ -71,6 +101,7 @@
                 mdbBarChart: mdbvue.mdbBarChart,
                 mdbDoughnutChart: mdbvue.mdbDoughnutChart,
             },
+            
              data: {
                 votings: votings,
                 unstarted :unstarted,
@@ -129,7 +160,8 @@
                       ticks: {
               beginAtZero: true
             },
-                        gridLines: {
+            
+                gridLines: {
                           display: true,
                           color: "rgba(0, 0, 0, 0.1)"
                         }
@@ -223,10 +255,21 @@
                   
                     return "rgba(" + r + "," + g + "," + b;
                 },
+            }, 
+            mounted(){
+             
+              var res=[]
+              this.votings.forEach(x => {res.push(JSON.parse(x))})
+              this.votings=res
+              console.log(votings)
             }
+            
         })
-      
         
+       
     </script>
-</body>
+  
+  
+
+  
 {% endblock %}
