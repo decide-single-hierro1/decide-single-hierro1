@@ -21,23 +21,23 @@
             <b-navbar-brand tag="h1">Decide</b-navbar-brand>
         </b-navbar>
 
-        <div style=font-size:1vw;" class="voting container">
-            <h1 style=font-size:1vw;">[[ voting.id ]] - [[ voting.name ]]</h1>
+        <div style=font-size:3vw;" class="voting container">
+            <h1 style=font-size:3vw;">[[ voting.id ]] - [[ voting.name ]]</h1>
 
-            <h2 style=font-size:1vw;" v-if="!voting.start_date">Votación no comenzada</h2>
-            <h2 style=font-size:1vw;" v-else-if="!voting.end_date">Votación en curso</h2>
+            <h2 style=font-size:3vw;" v-if="!voting.start_date">Votación no comenzada</h2>
+            <h2 style=font-size:3vw;" v-else-if="!voting.end_date">Votación en curso</h2>
             <div v-else>
-            <h2 style=font-size:1vw;">Votación finalizada</h2>
-            <h2 style=font-size:1vw;" class="heading">Fecha y hora de inicio: [[start_date]]</h2>
-            <h2 style=font-size:1vw;" class="heading">Fecha y hora de fin: [[end_date]]</h2>
-                <h2 style=font-size:1vw;" class="heading">Resultados:</h2>
+            <h2 style=font-size:3vw;">Votación finalizada</h2>
+            <h2 style=font-size:3vw;" class="heading">Fecha y hora de inicio: [[start_date]]</h2>
+            <h2 style=font-size:3vw;" class="heading">Fecha y hora de fin: [[end_date]]</h2>
+                <h2 style=font-size:3vw;" class="heading">Resultados:</h2>
 
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered  table-responsive table-striped">
                     <thead>
                         <tr>
-                            <th>Opción</th>
-                            <th>Puntuación</th>
-                            <th>Votos</th>
+                            <th style=font-size:2vw;">Opción</th>
+                            <th style=font-size:2vw;">Puntuación</th>
+                            <th style=font-size:2vw;">Votos</th>
                         </tr>
                     </thead>
                     <tbody>
