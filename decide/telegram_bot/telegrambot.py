@@ -2,6 +2,7 @@ from django.conf import settings
 from django.http import Http404
 
 from base import mods
+from telegram_bot import observer
 
 from django_telegrambot.apps import DjangoTelegramBot
 
@@ -19,9 +20,12 @@ KEY = settings.TELEGRAM_APIKEY_BOT
 
 def main():
     dp = DjangoTelegramBot.dispatcher
+    events = observer.event_handler()
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('help', help))
     dp.add_handler(CommandHandler('getvotes', getvotes))
+    dp.add_handler(CommandHandler('subscribe',events.subscribe))
+    dp.add_handler(CommandHandler('un-subscribe',events.unsubscribe))
     dp.add_handler(MessageHandler(Filters.command, unknown))  # Filters out unknown commands
     
     dp.add_handler(MessageHandler(Filters.text, unknown_text)) # Filters out unknown messages.
