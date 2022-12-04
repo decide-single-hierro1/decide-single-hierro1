@@ -10,7 +10,7 @@
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbvue/lib/css/mdb.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbvue/lib/css/mdb.min.css">
 {% endblock %}
 
 {% block content %}
@@ -40,13 +40,49 @@
     
       :height="300"
     ></mdb-doughnut-chart>
-         
+    <table class="table table-striped ">    
+      <tr>
+        <h5>Número total de Votaciones: </h5>
+        <td><b>[[total_votings]]</b></td>
+      </tr>
+    </table> 
+
+    <h5>Listado de Votaciones</h5>
+        
+    <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Fecha de Inicio</th>
+              <th>Fecha de Fin</th>
+            </tr>
+        
+          </thead>
+          <tbody>
+          
+            <tr v-for="voting in votings" :key="voting.id">
+              <th><b><a :href="'/visualizer/' + voting.id">[[voting.id]]</b></a></th>
+              <td><a :href="'/visualizer/' + voting.id">[[voting.name]]</a></td>
+              <td>[[voting.start_date]]</td>
+            
+              <td>[[voting.end_date]]</td>
+             <!-- <td>[[voting.tally]]</td>-->
+            </tr>
+          </tbody>
+       
+          </tfoot>
+    </table> 
+    
+
+      <div class="small d-flex flex-wrap col-12"> 
+    </div>
          </div>
         
             </div>
     
         </div>
-   
+ 
 {% endblock %}
 
 {% block extrabody %}
@@ -55,7 +91,7 @@
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mdbvue/lib/index.js"></script>
-    
+  
     <script>
        
         var votings ={{votings|safe}};
@@ -63,7 +99,7 @@
         var started ={{started|safe}};
         var finished ={{finished|safe}};
         var closedV ={{closed|safe}};
-        
+      
         var app = new Vue({
             delimiters: ['[[', ']]'],
             el: '#app-visualizer',
@@ -72,6 +108,7 @@
                 mdbBarChart: mdbvue.mdbBarChart,
                 mdbDoughnutChart: mdbvue.mdbDoughnutChart,
             },
+            
              data: {
                 votings: votings,
                 unstarted :unstarted,
@@ -130,7 +167,8 @@
                       ticks: {
               beginAtZero: true
             },
-                        gridLines: {
+            
+                gridLines: {
                           display: true,
                           color: "rgba(0, 0, 0, 0.1)"
                         }
@@ -224,10 +262,33 @@
                   
                     return "rgba(" + r + "," + g + "," + b;
                 },
+                parseFecha(fecha){
+                  let s_date = new Date(fecha);
+                  return s_date.toLocaleDateString('es-ES') +' '+s_date.toLocaleTimeString('es-ES');
+                  
+                  
+                }
+            }, 
+            mounted(){
+             
+              var res=[]
+              this.votings.forEach(x => {
+                x=JSON.parse(x)
+                
+                x.start_date=this.parseFecha(x.start_date)
+                x.end_date=this.parseFecha(x.end_date)
+                res.push(x)})
+              this.votings=res
+              console.log(votings)
             }
+            
+            
         })
-      
         
+       
     </script>
-</body>
+  
+  
+
+  
 {% endblock %}
