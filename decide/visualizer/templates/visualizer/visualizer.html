@@ -21,16 +21,16 @@
             <b-navbar-brand tag="h1">Decide</b-navbar-brand>
         </b-navbar>
 
-        <div class="voting container" style= "font-size: clamp(14px, 3vw, 22px);">
-            <h1>[[ voting.id ]] - [[ voting.name ]]</h1>
+        <div style=font-size:1vw;" class="voting container">
+            <h1 style=font-size:1vw;">[[ voting.id ]] - [[ voting.name ]]</h1>
 
-            <h2 v-if="!voting.start_date">Votación no comenzada</h2>
-            <h2 v-else-if="!voting.end_date">Votación en curso</h2>
+            <h2 style=font-size:1vw;" v-if="!voting.start_date">Votación no comenzada</h2>
+            <h2 style=font-size:1vw;" v-else-if="!voting.end_date">Votación en curso</h2>
             <div v-else>
-            <h2>Votación finalizada</h2>
-            <h2 class="heading">Fecha y hora de inicio: [[start_date]]</h2>
-            <h2 class="heading">Fecha y hora de fin: [[end_date]]</h2>
-                <h2 class="heading">Resultados:</h2>
+            <h2 style=font-size:1vw;">Votación finalizada</h2>
+            <h2 style=font-size:1vw;" class="heading">Fecha y hora de inicio: [[start_date]]</h2>
+            <h2 style=font-size:1vw;" class="heading">Fecha y hora de fin: [[end_date]]</h2>
+                <h2 style=font-size:1vw;" class="heading">Resultados:</h2>
 
                 <table class="table table-bordered table-striped">
                     <thead>
