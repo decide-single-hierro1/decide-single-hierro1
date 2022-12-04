@@ -58,7 +58,7 @@
               <th><a :href="'/visualizer/' + voting.id">[[voting.id]]</a></th>
               <td>[[voting.name]]</td>
               <td>[[voting.start_date]]</td>
-    
+            
               <td>[[voting.end_date]]</td>
              <!-- <td>[[voting.tally]]</td>-->
             </tr>
@@ -255,14 +255,26 @@
                   
                     return "rgba(" + r + "," + g + "," + b;
                 },
+                parseFecha(fecha){
+                  let s_date = new Date(fecha);
+                  return s_date.toLocaleDateString('es-ES') +' '+s_date.toLocaleTimeString('es-ES');
+                  
+                  
+                }
             }, 
             mounted(){
              
               var res=[]
-              this.votings.forEach(x => {res.push(JSON.parse(x))})
+              this.votings.forEach(x => {
+                x=JSON.parse(x)
+                
+                x.start_date=this.parseFecha(x.start_date)
+                x.end_date=this.parseFecha(x.end_date)
+                res.push(x)})
               this.votings=res
               console.log(votings)
             }
+            
             
         })
         
