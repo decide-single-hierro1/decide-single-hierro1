@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block content %}
+<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=0.5">
     <div id="app-visualizer">
         <!-- Navbar -->
         <b-navbar type="dark" variant="secondary">
@@ -21,9 +22,9 @@
         </b-navbar>
 
         <div class="voting container">
-         <h1>Dashboard</h1>
+         <h1 style=font-size:3vw;">Dashboard</h1>
          <div class="d-flex flex-wrap col-12">
-         <h2 class="col-12">Todas las votaciones creadas</h2>
+         <h2  style=font-size:3vw;" class="col-12">Todas las votaciones creadas</h2>
          <mdb-bar-chart
     class="col-6"
       :data="barChartData"
@@ -111,8 +112,8 @@
                   ]
                 },
                 barChartOptions: {
-                  responsive: false,
-                  maintainAspectRatio: false,
+                  responsive: true,
+                  maintainAspectRatio: true,
                   scales: {
                     xAxes: [
                       {
@@ -160,8 +161,8 @@
                   ]
                 },
                 doughnutChartOptions: {
-                  responsive: false,
-                  maintainAspectRatio: false
+                  responsive: true,
+                  maintainAspectRatio: true
                 },
             },
                  beforeMount(){
