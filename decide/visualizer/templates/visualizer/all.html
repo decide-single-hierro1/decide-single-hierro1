@@ -39,10 +39,16 @@
     
       :height="300"
     ></mdb-doughnut-chart>
+    <table class="table table-striped ">    
+      <tr>
+        <h5>Número total de Votaciones: </h5>
+        <td><b>[[total_votings]]</b></td>
+      </tr>
+    </table> 
 
-        <h3>Listado de Votaciones</h3>
+    <h5>Listado de Votaciones</h5>
         
-        <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped">
           <thead>
             <tr>
               <th>Id</th>
@@ -55,8 +61,8 @@
           <tbody>
           
             <tr v-for="voting in votings" :key="voting.id">
-              <th><a :href="'/visualizer/' + voting.id">[[voting.id]]</a></th>
-              <td>[[voting.name]]</td>
+              <th><b><a :href="'/visualizer/' + voting.id">[[voting.id]]</b></a></th>
+              <td><a :href="'/visualizer/' + voting.id">[[voting.name]]</a></td>
               <td>[[voting.start_date]]</td>
             
               <td>[[voting.end_date]]</td>
@@ -65,8 +71,8 @@
           </tbody>
        
           </tfoot>
-      </table> 
-      
+    </table> 
+    
 
       <div class="small d-flex flex-wrap col-12"> 
     </div>
