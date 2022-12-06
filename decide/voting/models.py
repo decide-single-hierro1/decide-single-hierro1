@@ -95,8 +95,6 @@ class Voting(models.Model):
         self.tally = response.json()
         self.save()
 
-        # TODO: tras guardar el tally buscar la forma de notificar a todos los suscriptores
-        # TODO: get from event_handler_list voting_subject, then notify all telegram_observers
 
         self.do_postproc()
 

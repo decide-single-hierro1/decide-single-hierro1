@@ -64,3 +64,14 @@ class event_handler():
             update.message.reply_text('Subscripción anulada. Ya no recibirá un mensaje al finalizar la votación')
         except:
             update.message.reply_text('Algo ha fallado')
+
+    def check_status(self):
+        resolved_subjects = []
+        for subject in self.list_events:
+            r = mods.get('voting', params={'id': subject.id})
+            if r[0]['postproc']:
+                subject.notify()
+                resolved_subjects.append(subject)
+        self.list_events = [item for item in self.list_events if not item in resolved_subjects]
+
+

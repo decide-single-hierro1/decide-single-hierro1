@@ -12,6 +12,7 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
+from time import sleep
 
 import logging
 logger = logging.getLogger(__name__)
@@ -31,6 +32,10 @@ def main():
     dp.add_handler(MessageHandler(Filters.text, unknown_text)) # Filters out unknown messages.
 
     dp.add_error_handler(error) # Error handler
+
+    while(True):
+        sleep(60)
+        events.check_status()
 
 def start(update: Update,context: CallbackContext):
 	update.message.reply_text('''Gracias por usar el bot de decide.
