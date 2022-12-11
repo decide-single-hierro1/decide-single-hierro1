@@ -32,19 +32,23 @@ def main():
 
     dp.add_error_handler(error) # Error handler
 
+def start(update: Update, context: CallbackContext):
+	update.message.reply_text(
+        'Gracias por usar el bot de decide.\n'
+	    'Con este bot podrá consultar datos de las votaciones. Para más ayuda use el comando /help'
+    )
 
-def start(update: Update,context: CallbackContext):
-	update.message.reply_text('''Gracias por usar el bot de decide.
-	Con este bot podrá consultar datos de las votaciones. Para más ayuda use el comando help''')
-
-def help(update:Update,context:CallbackContext):
-	update.message.reply_text('''El bot decide ofrece los siguientes comandos:
-    /start: Inicia al bot
-    /help: Mensaje de ayuda
-	/getvotes [voting_id]: Genera un documento de los resultados de una votación dada
-    /subscribe [voting_id]: El usuario se subscribe a una votación en curso. Se le notificará cuando termine del resultado
-    /un-subscribe [voting_id]: El usuario es borrado de la lista de notificados de la votación''')
-    
+def help(update:Update, context:CallbackContext):
+    update.message.reply_text(
+        'El bot decide ofrece los siguientes comandos:\n'
+        '   /start: Inicia al bot\n'
+        '   /help: Mensaje de ayuda\n'
+        '   /getVotingInfo <id>: Muestra la información de una votación\n'
+        '   /getVotingPlot <id>: Muestra la información de una votación en un gráfico\n'
+        '   /getAllVotingsInfo: Muestra informacion general sobre todas las votaciones\n'
+        '   /getAllVotingsPlot: Muestra informacion general sobre todas las votaciones en un gráfico\n'
+        '   /listVotings: Lista todas las votaciones\n'
+    )    
 
 def getvotes(update:Update,context:CallbackContext):
 	# Display generated graphs?
@@ -68,4 +72,3 @@ def unknown_text(update:Update,context:CallbackContext):
 
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
-
