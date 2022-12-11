@@ -1,0 +1,20 @@
+
+
+# <type>: <subject> (50 char limit)
+
+# <body> (not mandatory, 72 char column limit)
+
+# <commit co-authors> (if exists)
+
+
+# Allowed <type> values:
+#    *feat (new feature)
+#    *fix (bug fix)
+#    *docs (changes to documentation)
+#    *style (formatting, missing semi colons, etc; no code change)
+#    *refactor (refactoring production code)
+#    *test (adding missing tests, refactoring tests; no production code
+#     change)
+#    *chore (updating grunt tasks etc; no production code change)
+
+# <subject> Must be capitalized and be written in imperative.

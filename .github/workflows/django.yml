@@ -1,6 +1,6 @@
 name: Python application
 
-on: [push]
+on: [pull_request]
 
 jobs:
   build:
@@ -47,3 +47,9 @@ jobs:
       with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: decide/coverage.xml 
+    - name: Discord notification
+      env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'El proyecto {{ EVENT_PAYLOAD.repository.full_name }} ha sido desplegado.'

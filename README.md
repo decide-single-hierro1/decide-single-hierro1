@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/wadobo/decide.svg?branch=master)](https://travis-ci.com/wadobo/decide) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/94a85eaa0e974c71af6899ea3b0d27e0)](https://www.codacy.com/app/Wadobo/decide?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wadobo/decide&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/94a85eaa0e974c71af6899ea3b0d27e0)](https://www.codacy.com/app/Wadobo/decide?utm_source=github.com&utm_medium=referral&utm_content=wadobo/decide&utm_campaign=Badge_Coverage)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/73a6735b2e4b4a869750c84ec6748ddc)](https://www.codacy.com/gh/decide-single-hierro1/decide-single-hierro1/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=decide-single-hierro1/decide-single-hierro1&amp;utm_campaign=Badge_Grade)
 
 Plataforma voto electrónico educativa
 =====================================
