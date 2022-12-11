@@ -29,12 +29,10 @@ class VisualizerTests(BaseTestCase):
             opt.save()
         v = Voting( name='test voting', question=q)
         v.save()
-
         a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
                                           defaults={'me': True, 'name': 'test auth'})
         a.save()
         v.auths.add(a)
-
         return v
 
     def create_voters(self, v,):
@@ -55,12 +53,12 @@ class VisualizerTests(BaseTestCase):
     def store_votes(self, v,rang):
         voters = list(Census.objects.filter(voting_id=v.id))
         voter = voters.pop()
-
         clear = {}
         for opt in v.question.options.all():
             clear[opt.number] = 0
             for i in range(rang):
                 a, b = self.encrypt_msg(opt.number, v)
+                print(str(i))
                 data = {
                     'voting': v.id,
                     'voter': voter.voter_id,
@@ -122,7 +120,7 @@ class VisualizerTests(BaseTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        v1 = self.create_voting()
+        self.create_voting()
         res = 1
         num = metrics.unstartedVotings()
         self.assertEquals(res, num)
@@ -152,9 +150,9 @@ class VisualizerTests(BaseTestCase):
         v3.start_date = timezone.now()
         v3.save()
 
-        v4 = self.create_voting()
-        v5 = self.create_voting()
-        v6 = self.create_voting()
+        self.create_voting()
+        self.create_voting()
+        self.create_voting()
 
         res = 4
         num = metrics.startedVotings()
@@ -166,14 +164,14 @@ class VisualizerTests(BaseTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        clear = self.store_votes(v,5)
+        self.store_votes(v,5)
 
         v1 = self.create_voting()
         self.create_voters(v1)
         v1.create_pubkey()
         v1.start_date = timezone.now()
         v1.save()
-        clear = self.store_votes(v1,4)
+        self.store_votes(v1,4)
         print(str(v.id)+': votos ->'+ str(metrics.votesOfVoting(v.id)) + str(v1.id)+': votos ->'+ str(metrics.votesOfVoting(v1.id)))
         res = 125
         comp = metrics.votingComparator(v.id,v1.id)
@@ -208,7 +206,7 @@ class VisualizerTests(BaseTestCase):
         v.start_date = timezone.now()
         v.end_date = timezone.now()
         v.save()
-        clear = self.store_votes(v,5)
+        self.store_votes(v,5)
         user_admin = User(username='admin', is_staff=True)
         user_admin.set_password('qwerty')
         user_admin.save()
