@@ -12,7 +12,6 @@ from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
-from time import sleep
 
 import logging
 logger = logging.getLogger(__name__)
@@ -33,9 +32,6 @@ def main():
 
     dp.add_error_handler(error) # Error handler
 
-    while(True):
-        sleep(60)
-        events.check_status()
 
 def start(update: Update,context: CallbackContext):
 	update.message.reply_text('''Gracias por usar el bot de decide.
@@ -45,8 +41,10 @@ def help(update:Update,context:CallbackContext):
 	update.message.reply_text('''El bot decide ofrece los siguientes comandos:
     /start: Inicia al bot
     /help: Mensaje de ayuda
-	/getvotes: Genera un documento de los resultados de una votación
-    /vote: Permite votar''')
+	/getvotes [voting_id]: Genera un documento de los resultados de una votación dada
+    /subscribe [voting_id]: El usuario se subscribe a una votación en curso. Se le notificará cuando termine del resultado
+    /un-subscribe [voting_id]: El usuario es borrado de la lista de notificados de la votación''')
+    
 
 def getvotes(update:Update,context:CallbackContext):
 	# Display generated graphs?
