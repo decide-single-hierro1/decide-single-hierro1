@@ -177,7 +177,7 @@ DJANGO_TELEGRAMBOT = {
     # !!!!!! Set to deployment Server !!!!!!
     # For testing, run >> ngrok http 8000 and paste forwarding server
     'WEBHOOK_SITE' : 'https://<change.this>.eu.ngrok.io',
-    'WEBHOOK_PREFIX' : '/prefix', # (Optional[str]) # If this value is specified,
+    'WEBHOOK_PREFIX' : '/telegram_bot', # (Optional[str]) # If this value is specified,
                                   # a prefix is added to webhook url
 
     #'WEBHOOK_CERTIFICATE' : 'cert.pem', # If your site use self-signed
