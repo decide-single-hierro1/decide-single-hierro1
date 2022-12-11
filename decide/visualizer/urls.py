@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import VisualizerView, VisualizerQuestion,  VisualizerAll, VisualizerList, FinishedVotings, VotesOfVoting, UnstartedVotings, StartedVotings, ClosedVotings, VotingComparator, Abstentions
-
+from .views import *
 urlpatterns = [
     path('<int:voting_id>/', VisualizerView.as_view()),
     path('',VisualizerAll.as_view()),
