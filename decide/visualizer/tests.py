@@ -74,7 +74,7 @@ class VisualizerTests(BaseTestCase):
     def setUp(self):
         self.client = APIClient()
         mods.mock_query(self.client)
-        
+
     def tearDown(self):
         self.client = None
         super().tearDown()
@@ -92,7 +92,7 @@ class VisualizerTests(BaseTestCase):
         response = self.client.get('/visualizer/999/')
         self.assertEqual(response.status_code, 404)
         
-    def test_num_votos(self): 
+    def test_num_votos(self):
         v = self.create_voting()
         self.create_voters(v)
         v.create_pubkey()
@@ -175,7 +175,7 @@ class VisualizerTests(BaseTestCase):
         print(str(v.id)+': votos ->'+ str(metrics.votesOfVoting(v.id)) + str(v1.id)+': votos ->'+ str(metrics.votesOfVoting(v1.id)))
         res = 125
         comp = metrics.votingComparator(v.id,v1.id)
-        self.assertEquals(res, comp)        
+        self.assertEquals(res, comp)
 
     def test_votaciones_cerradas(self):
         v = self.create_voting()
