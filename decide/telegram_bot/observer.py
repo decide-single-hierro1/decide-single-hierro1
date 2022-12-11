@@ -73,7 +73,9 @@ class event_handler():
     def check_status(self, sender,instance, **kwargs):
         sid = instance.id
         if not instance.postproc is None:
-            subject = next(s.id == sid for s in self.list_events)
+            subject = next((s.id == sid for s in self.list_events),None)
+            if subject is None:
+                return
             subject.notify()
             self.list_events.remove(subject)
 
