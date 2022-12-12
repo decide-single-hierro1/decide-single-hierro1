@@ -9,7 +9,6 @@ from mixnet.models import Auth
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from voting.models import Voting, Question, QuestionOption
-import visualizer.metrics as metrics
 from . import telegrambot
 
 from unittest.mock import Mock
@@ -125,7 +124,7 @@ class TelegramBotTests(BaseTestCase):
             '   /listVotings: Lista todas las votaciones\n'
         )
 
-    def test_getVotingInfo(self):        
+    def test_getVotingInfo(self):
         # Create Voting with votes
         v = self.complete_voting()
         

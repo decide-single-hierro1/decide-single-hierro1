@@ -7,7 +7,6 @@ from telegram_bot import observer
 
 from django_telegrambot.apps import DjangoTelegramBot
 
-from telegram.ext.updater import Updater
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
@@ -31,15 +30,15 @@ def main():
     dp.add_handler(CommandHandler('getAllVotingsInfo', getAllVotingsInfo))
     dp.add_handler(CommandHandler('getAllVotingsPlot', getAllVotingsPlot))
     dp.add_handler(CommandHandler('listVotings', listVotings))
-    dp.add_handler(CommandHandler('subscribe',events.subscribe))
-    dp.add_handler(CommandHandler('un-subscribe',events.unsubscribe))
+    dp.add_handler(CommandHandler('subscribe', events.subscribe))
+    dp.add_handler(CommandHandler('un-subscribe', events.unsubscribe))
     dp.add_handler(MessageHandler(Filters.command, unknown))  # Filters out unknown commands
     
     dp.add_handler(MessageHandler(Filters.text, unknown_text)) # Filters out unknown messages.
 
     dp.add_error_handler(error) # Error handler
 
-def start(update: Update, context: CallbackContext):
+def start(update: Update, context:CallbackContext):
 	update.message.reply_text(
         'Gracias por usar el bot de decide.\n'
         'Con este bot podrá consultar datos de las votaciones. Para más ayuda use el comando /help'
@@ -164,11 +163,11 @@ def listVotings(update:Update, context:CallbackContext):
     except:
         raise Http404
 
-def unknown(update:Update,context:CallbackContext):
+def unknown(update:Update, context:CallbackContext):
 	update.message.reply_text('Lo siento, no reconozco el comando: '+
                              update.message.text)
 
-def unknown_text(update:Update,context:CallbackContext):
+def unknown_text(update:Update, context:CallbackContext):
 	update.message.reply_text('Lo siento, no reconozco el significado de: '+
                              update.message.text)
 
