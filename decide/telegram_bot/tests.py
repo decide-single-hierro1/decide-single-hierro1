@@ -15,7 +15,6 @@ from . import telegrambot
 from unittest.mock import Mock
 
 class TelegramBotTests(BaseTestCase):
-    bot = None
 
     def setUp(self):
         super().setUp()
@@ -69,7 +68,7 @@ class TelegramBotTests(BaseTestCase):
         clear = {}
         for opt in v.question.options.all():
             clear[opt.number] = 0
-            for i in range(2):
+            for _ in range(2):
                 a, b = self.encrypt_msg(opt.number, v)
                 data = {
                     'voting': v.id,
@@ -91,7 +90,7 @@ class TelegramBotTests(BaseTestCase):
         v.start_date = timezone.now()
         v.save()
 
-        clear = self.store_votes(v)
+        self.store_votes(v)
 
         self.login()  # set token
         v.tally_votes(self.token)
@@ -106,7 +105,7 @@ class TelegramBotTests(BaseTestCase):
 
         mocked_update.message.reply_text.assert_called_with(
             'Gracias por usar el bot de decide.\n'
-	        'Con este bot podrá consultar datos de las votaciones. Para más ayuda use el comando /help'
+            'Con este bot podrá consultar datos de las votaciones. Para más ayuda use el comando /help'
         )
 
     def test_help(self):
@@ -126,8 +125,7 @@ class TelegramBotTests(BaseTestCase):
             '   /listVotings: Lista todas las votaciones\n'
         )
 
-    def test_getVotingInfo(self):
-        
+    def test_getVotingInfo(self):        
         # Create Voting with votes
         v = self.complete_voting()
         
@@ -145,8 +143,6 @@ class TelegramBotTests(BaseTestCase):
             'Número de votos: 10\n'
             'Número de abstenciones: 1\n'
         )
-
-
 
     def test_getVotingPlot(self):
         # Create Voting
@@ -173,8 +169,6 @@ class TelegramBotTests(BaseTestCase):
         mocked_context.args = [v2.id]
 
         telegrambot.getVotingPlot(mocked_update, mocked_context)
-
-
 
     def test_getAllVotingsInfo(self):
         # Create Voting
