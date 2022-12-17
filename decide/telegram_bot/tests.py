@@ -9,7 +9,7 @@ from mixnet.models import Auth
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from voting.models import Voting, Question, QuestionOption
-from . import telegrambot
+from . import telegrambot, observer
 
 from unittest.mock import Mock
 
@@ -261,3 +261,41 @@ class TelegramBotTests(BaseTestCase):
 
         mocked_update.message.reply_text.assert_called_with('Lo siento, no reconozco el significado de: test unknown text')
 
+    
+    def test_subscribe(self):
+        # Create Voting
+        v = self.create_voting()
+
+        # Start Voting
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        mocked_update = Mock()
+        mocked_context = Mock()
+
+        mocked_context.args = [v.id]
+        mocked_update.message.chat.id = 1234
+
+        observer.event_handler.subscribe(mocked_update, mocked_context)
+
+        mocked_update.message.reply_text.assert_called_with('Subscripción realizada con éxito. Espere hasta que finalice la votación para consultar los resultados')
+ 
+    def test_unsubscribe(self):
+        v = self.create_voting()
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        mocked_update = Mock()
+        mocked_context = Mock()
+
+        mocked_context.args = [v.id]
+        mocked_update.message.chat.id = 1234
+        #Need to subscribe first
+        observer.event_handler.subscribe(mocked_update, mocked_context)
+        observer.event_handler.unsubscribe(mocked_update,mocked_context)
+
+        mocked_update.message.reply_text.assert_called_with('Subscripción anulada. Ya no recibirá un mensaje al finalizar la votación')
+
+        
