@@ -91,7 +91,19 @@ class VisualizerTests(BaseTestCase):
     def test_votacion_no_existente(self):
         response = self.client.get('/visualizer/999/')
         self.assertEqual(response.status_code, 404)
-        
+
+    def test_vista_detalle(self):
+        v = self.create_voting()
+        response=self.client.get('/visualizer/' +str(v.id)+'/')
+        self.assertEqual(response.status_code,200)
+    def test_vista_detalle_Neg(self):
+        response=self.client.get('/visualizer/-1/')
+        self.assertEqual(response.status_code,404)
+    def test_vista_detalle_IdNoExiste(self):
+        v = self.create_voting()
+        response=self.client.get('/visualizer/100/')
+        self.assertEqual(response.status_code,404) 
+
     def test_num_votos(self):
         v = self.create_voting()
         self.create_voters(v)
@@ -216,13 +228,5 @@ class VisualizerTests(BaseTestCase):
         res = 1
         num = metrics.finishedVotings()
         self.assertEquals(res, num)
-    def test_vista_detalle(self):
-        response=self.client.get('/visualizer/1/')
-        self.assertEqual(response.status_code,200)
-    def test_vista_detalle_Neg(self):
-        response=self.client.get('/visualizer/-1/')
-        self.assertEqual(response.status_code,404)
-    def test_vista_detalle_IdNoExiste(self):
-        response=self.client.get('/visualizer/100/')
-        self.asserEqual(response.statuts_code,404)
+
         
