@@ -60,7 +60,6 @@
         
           </thead>
           <tbody>
-          
             <tr v-for="voting in votings" :key="voting.id">
               <th><b><a :href="'/visualizer/' + voting.id">[[voting.id]]</b></a></th>
               <td><a :href="'/visualizer/' + voting.id">[[voting.name]]</a></td>
@@ -357,11 +356,9 @@
       
       this.init = function() {
         var rows = document.getElementById(tablaPag).rows;
-        var records = (rows.length - 1);
-        this.pages = Math.ceil(records / itemsPerPage);
-      
+        var total = (rows.length - 1);
+        this.pages = Math.ceil(total / itemsPerPage);
         this.inited = true;
-      
       }
       
       this.showPageNav = function(pagerName, positionId) {
@@ -379,7 +376,7 @@
       
       for (var page = 1; page <= this.pages; page++)
         pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span> ';
-      
+        
         pagerHtml += '<span onclick="'+pagerName+'.next();" class="pg-normal"> Siguiente »</span>';
       
         element.innerHTML = pagerHtml;
