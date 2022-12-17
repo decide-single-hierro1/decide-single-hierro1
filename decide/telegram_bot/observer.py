@@ -10,6 +10,7 @@ from telegram.ext.callbackcontext import CallbackContext
 from voting.models import Voting
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from visualizer import metrics
 
 class telegramObserver():
 
@@ -20,8 +21,22 @@ class telegramObserver():
     def update(self):
         try:
             r = mods.get('voting', params={'id': self.subscriptionId})
-            if len(r) == 0:
-                Bot.send_message(chat_id=self.chatId,text=r)
+            name = r['name']
+            desc = r['desc']
+
+            votes = metrics.votesOfVoting(self.subscriptionId)
+            abstentions = metrics.abstentions(self.subscriptionId)
+
+            re = f'Información de la votación {self.subscriptionId}\n'
+            re += f'Nombre: {name}\n'
+            if (desc == '' or desc == None):
+                re += 'Descripción: Esta votación no tiene descripción\n'
+            else:
+                re += f'Descripción: {desc}\n'
+            
+            re += f'Número de votos: {votes}\n'
+            re += f'Número de abstenciones: {abstentions}\n'
+            Bot.send_message(chat_id=self.chatId,text=re)
         except:
             raise Http404
 
