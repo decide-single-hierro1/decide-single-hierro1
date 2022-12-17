@@ -91,56 +91,46 @@ class VisualizerList(APIView):
         r = mods.get('voting')
         for ri in r :
             res.append(json.dumps(ri))
-
         return Response(res)
 
 class VotesOfVoting(APIView):
     renderer_classes = [JSONRenderer]
     def get(self, request, v_id):
         res = metrics.votesOfVoting(v_id)
-        
         return Response(res)
 
 class UnstartedVotings(APIView):
     renderer_classes = [JSONRenderer]
     def get(self, request):
         res = metrics.unstartedVotings()
-
         return Response(res)   
 
 class StartedVotings(APIView):
     renderer_classes = [JSONRenderer]
     def get(self, request):
         res = metrics.startedVotings()
-
         return Response(res)      
    
 class FinishedVotings(APIView):
     renderer_classes = [JSONRenderer]
     def get(self, request):
         res = metrics.finishedVotings()
-
         return Response(res)
 
 class ClosedVotings(APIView):
     renderer_classes = [JSONRenderer]
     def get(self, request):
         res = metrics.closedVotings()
-
         return Response(res)
 
 class VotingComparator(APIView):
     renderer_classes = [JSONRenderer]
     def get(self, request, v1_id, v2_id):
         res = metrics.votingComparator(v1_id, v2_id)
-        
         return Response(res)
 
 class Abstentions(APIView):
     renderer_classes = [JSONRenderer]
     def get(self, request, v_id):
         res = metrics.abstentions(v_id)
-        
         return Response(res)
-
-
