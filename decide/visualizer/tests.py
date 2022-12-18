@@ -6,13 +6,21 @@ from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
 from voting.models import Voting, Question, QuestionOption
 import visualizer.metrics as metrics
-
 from rest_framework.test import APIClient
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.test import TestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+
+from base.tests import BaseTestCase
 class VisualizerTests(BaseTestCase):
     def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
         pk = v.pub_key
@@ -103,7 +111,10 @@ class VisualizerTests(BaseTestCase):
         v = self.create_voting()
         response=self.client.get('/visualizer/100/')
         self.assertEqual(response.status_code,404) 
-
+    def test_vista_caracter(self):
+        response=self.client.get('/visualizer/abc/')
+        self.assertEqual(response.status_code,404)
+        
     def test_num_votos(self):
         v = self.create_voting()
         self.create_voters(v)
@@ -228,5 +239,3 @@ class VisualizerTests(BaseTestCase):
         res = 1
         num = metrics.finishedVotings()
         self.assertEquals(res, num)
-
-        
