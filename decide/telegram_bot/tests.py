@@ -283,6 +283,22 @@ class TelegramBotTests(BaseTestCase):
 
         mocked_update.message.reply_text.assert_called_with('Subscripción realizada con éxito. Espere hasta que finalice la votación para consultar los resultados')
  
+    def test_subscribeError(self):
+        v = self.create_voting()
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        mocked_update = Mock()
+        mocked_context = Mock()
+
+        mocked_context.args = [v.id+1000]
+        mocked_context._chat_id_and_data = [1234]
+
+        telegrambot.subscribe(mocked_update,mocked_context)
+        mocked_update.message.reply_text.assert_called_with('Algo ha fallado')
+ 
+
     def test_unsubscribe(self):
         v = self.create_voting()
         v.create_pubkey()
@@ -299,6 +315,26 @@ class TelegramBotTests(BaseTestCase):
         telegrambot.unsubscribe(mocked_update,mocked_context)
 
         mocked_update.message.reply_text.assert_called_with('Subscripción anulada. Ya no recibirá un mensaje al finalizar la votación')
+
+    def test_unsubscribeError(self):
+        v = self.create_voting()
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        mocked_update = Mock()
+        mocked_context = Mock()
+
+        mocked_context.args = [v.id]
+        mocked_context._chat_id_and_data = [1234]
+        #Need to subscribe first
+        telegrambot.subscribe(mocked_update, mocked_context)
+
+        mocked_context.args = [v.id+1]
+        telegrambot.unsubscribe(mocked_update,mocked_context)
+
+        mocked_update.message.reply_text.assert_called_with('Algo ha fallado')
+
 
     def test_notify(self):
         v = self.complete_voting()
