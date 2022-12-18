@@ -11,6 +11,41 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbvue/lib/css/mdb.min.css">
+    <style >
+      .pg-normal:hover {
+        list-style: none;
+        margin: 0;
+        color:blue;
+        
+        }
+      .pg-normal{
+        padding: 0;
+        background-color: #e7e7e7;
+        padding: 15px 10px;
+        border: 2px solid green;
+        
+      }    
+      .pg-normal li {
+        margin: 0 1px;
+        }
+      .pg-selected{
+        padding: 0;
+        background-color: #e7e7e7;
+        padding: 15px 10px;
+        border: 2px solid green;
+      }
+      .pg-selected:hover {
+         
+        list-style: none;
+        margin: 0;
+        color:blue;
+          }
+              
+      .pg-selected li {
+          margin: 0 1px;
+          }
+      
+      </style>
 {% endblock %}
 
 {% block content %}
@@ -60,7 +95,6 @@
         
           </thead>
           <tbody>
-          
             <tr v-for="voting in votings" :key="voting.id">
               <th><b><a :href="'/visualizer/' + voting.id">[[voting.id]]</b></a></th>
               <td><a :href="'/visualizer/' + voting.id">[[voting.name]]</a></td>
@@ -357,11 +391,9 @@
       
       this.init = function() {
         var rows = document.getElementById(tablaPag).rows;
-        var records = (rows.length - 1);
-        this.pages = Math.ceil(records / itemsPerPage);
-      
+        var total = (rows.length - 1);
+        this.pages = Math.ceil(total / itemsPerPage);
         this.inited = true;
-      
       }
       
       this.showPageNav = function(pagerName, positionId) {
@@ -375,12 +407,12 @@
       }
       
       var element = document.getElementById(positionId);
-      var pagerHtml = '<span onclick="' + pagerName + '.prev();" class="pg-normal"> « Anterior </span> ';
+      var pagerHtml = '<span onclick="' + pagerName + '.prev();" class="pg-normal"> Anterior </span> ';
       
       for (var page = 1; page <= this.pages; page++)
         pagerHtml += '<span id="pg' + page + '" class="pg-normal" onclick="' + pagerName + '.showPage(' + page + ');">' + page + '</span> ';
-      
-        pagerHtml += '<span onclick="'+pagerName+'.next();" class="pg-normal"> Siguiente »</span>';
+        
+        pagerHtml += '<span onclick="'+pagerName+'.next();" class="pg-normal"> Siguiente </span>';
       
         element.innerHTML = pagerHtml;
       
@@ -388,6 +420,7 @@
       
       }
     </script>
+  
     <script type="text/javascript">
       var pager = new Pager('tablaPag', 3);
       pager.init();
