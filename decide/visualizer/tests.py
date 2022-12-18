@@ -102,7 +102,7 @@ class VisualizerTests(BaseTestCase):
         self.assertEqual(response.status_code,404)
     def test_vista_detalle_IdNoExiste(self):
         response=self.client.get('/visualizer/100/')
-        self.assertEqual(response.status_code,404) 
+        self.assertEqual(response.status_code,404)
     def test_vista_caracter(self):
         response=self.client.get('/visualizer/abc/')
         self.assertEqual(response.status_code,404)
