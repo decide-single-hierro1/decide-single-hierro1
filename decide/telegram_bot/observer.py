@@ -8,8 +8,6 @@ from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
 
 from voting.models import Voting
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from visualizer import metrics
 
 class telegramObserver():
@@ -84,14 +82,13 @@ class event_handler():
         except:
             update.message.reply_text('Algo ha fallado')
 
-    @receiver(post_save,sender=Voting)
-    def check_status(self, sender,instance, **kwargs):
-        sid = instance.id
-        if not instance.postproc is None:
-            subject = next((s.id == sid for s in self.list_events),None)
-            if subject is None:
-                return
-            subject.notify()
-            self.list_events.remove(subject)
+    def check_status(self):
+        resolved_subjects = []
+        for subject in self.list_events:
+            r = mods.get('voting', params={'id': subject.id})
+            if r[0]['postproc']:
+                subject.notify()
+                resolved_subjects.append(subject)
+        self.list_events = [item for item in self.list_events if not item in resolved_subjects]
 
 
