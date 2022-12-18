@@ -6,7 +6,7 @@ import json
 import threading
 from discord.ext import commands
 import asyncio
-
+import base64
 #from base import mods
 #from django.http import Http404
 
@@ -69,4 +69,4 @@ async def on_message( message):
                 await message.channel.send(response.text)
 def init():
         
-	client.run(settings.DISCORD_KEY)
+	client.run((settings.DISCORD_KEY).replace(':',''))
