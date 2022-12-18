@@ -1,4 +1,4 @@
-from base.tests import BaseTestCase
+
 from base import mods
 from census.models import Census
 from mixnet.mixcrypt import ElGamal
@@ -101,7 +101,6 @@ class VisualizerTests(BaseTestCase):
         response=self.client.get('/visualizer/-1/')
         self.assertEqual(response.status_code,404)
     def test_vista_detalle_IdNoExiste(self):
-        v = self.create_voting()
         response=self.client.get('/visualizer/100/')
         self.assertEqual(response.status_code,404) 
     def test_vista_caracter(self):
