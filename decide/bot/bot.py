@@ -70,3 +70,4 @@ async def on_message( message):
 def init():
         
 	client.run((settings.DISCORD_KEY).replace(':',''))
+
