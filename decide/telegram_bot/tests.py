@@ -122,6 +122,8 @@ class TelegramBotTests(BaseTestCase):
             '   /getAllVotingsInfo: Muestra informacion general sobre todas las votaciones\n'
             '   /getAllVotingsPlot: Muestra informacion general sobre todas las votaciones en un gráfico\n'
             '   /listVotings: Lista todas las votaciones\n'
+            '   /subscribe <id>: Le subscribe para recibir actualizaciones de una votación\n'
+            '   /unsubscribe <id>: Cancela su subscripción para las actualizaciones de una votación\n'
         )
 
     def test_getVotingInfo(self):
@@ -277,7 +279,7 @@ class TelegramBotTests(BaseTestCase):
         mocked_context.args = [v.id]
         mocked_update.message.chat.id = 1234
 
-        observer.event_handler.subscribe(mocked_update, mocked_context)
+        telegrambot.subscribe(mocked_update, mocked_context)
 
         mocked_update.message.reply_text.assert_called_with('Subscripción realizada con éxito. Espere hasta que finalice la votación para consultar los resultados')
  
@@ -293,8 +295,8 @@ class TelegramBotTests(BaseTestCase):
         mocked_context.args = [v.id]
         mocked_update.message.chat.id = 1234
         #Need to subscribe first
-        observer.event_handler.subscribe(mocked_update, mocked_context)
-        observer.event_handler.unsubscribe(mocked_update,mocked_context)
+        telegrambot.subscribe(mocked_update, mocked_context)
+        telegrambot.unsubscribe(mocked_update,mocked_context)
 
         mocked_update.message.reply_text.assert_called_with('Subscripción anulada. Ya no recibirá un mensaje al finalizar la votación')
 
