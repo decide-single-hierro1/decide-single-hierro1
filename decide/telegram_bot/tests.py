@@ -17,7 +17,7 @@ class TelegramBotTests(BaseTestCase):
 
     def setUp(self):
         super().setUp()
-        telegrambot.main()
+        # telegrambot.main()
 
     def tearDown(self):
         super().tearDown()
@@ -292,7 +292,7 @@ class TelegramBotTests(BaseTestCase):
         mocked_update = Mock()
         mocked_context = Mock()
 
-        mocked_context.args = [v.id+1000]
+        mocked_context.args = []
         mocked_context._chat_id_and_data = [1234]
 
         telegrambot.subscribe(mocked_update,mocked_context)
@@ -330,7 +330,9 @@ class TelegramBotTests(BaseTestCase):
         #Need to subscribe first
         telegrambot.subscribe(mocked_update, mocked_context)
 
-        mocked_context.args = [v.id+1]
+        mocked_update = Mock()
+        mocked_context = Mock()
+        mocked_context.args = []
         telegrambot.unsubscribe(mocked_update,mocked_context)
 
         mocked_update.message.reply_text.assert_called_with('Algo ha fallado')
