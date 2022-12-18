@@ -11,14 +11,7 @@ from rest_framework.test import APIClient
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.test import TestCase
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 
 from base.tests import BaseTestCase
 class VisualizerTests(BaseTestCase):
@@ -239,3 +232,5 @@ class VisualizerTests(BaseTestCase):
         res = 1
         num = metrics.finishedVotings()
         self.assertEquals(res, num)
+
+
