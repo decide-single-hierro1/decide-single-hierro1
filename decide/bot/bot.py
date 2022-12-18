@@ -24,7 +24,7 @@ async def get_voting():
 @client.event
 async def on_ready():
         print('We have logged in as {0.user}'.format(client))
-    
+
 @client.event
 
 async def on_message( message):
@@ -32,12 +32,9 @@ async def on_message( message):
 
         if message.author == client.user:
             return
+	if message.content.startswith("$help"):
 
-      
-        #vid = context.args[0]
-        #r = mods.get('voting', params={'id': 3})
-        #if len(r) == 0:
-         #   await message.channel.send('Furro')
+	    await client.channel.send("Las opciones son: $votes, $started, $list")
         if message.content.startswith("$votes"):
             await  message.channel.send("Indique el ID de la votación")
             try:
@@ -64,8 +61,17 @@ async def on_message( message):
             response = requests.get("http://localhost:8000/visualizer/started")
 
             if response.text=="0":
-                await message.channel.send("Lo siento pero no hay votos")
+                await message.channel.send("Lo siento pero no hay ninguna votación empezada")
             else:  
+                await message.channel.send(response.text)
+
+        elif message.content.startswith("$finished"):
+
+            response = requests.get("http://localhost:8000/visualizer/finished")
+
+            if response.text=="0":
+                await message.channel.send("Lo siento pero no hay votaciones acabadas")
+            else:
                 await message.channel.send(response.text)
 def init():
         
