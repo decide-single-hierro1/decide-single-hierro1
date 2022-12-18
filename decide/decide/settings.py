@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-
+import base64
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '^##ydkswfu0+=ofw0l#$kv^8n)0$i(qd&d&ol#p9!b$8*5%j1+'
-
+DISCORD_KEY = 'MTA0OTA5NDUyO:DA2MzI1MD:Q0Mg.G3Dfh5.8IteR8tAxirk51ChY9Y3A:eYbY293tnFNtdJo70'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -68,6 +68,7 @@ MODULES = [
     'store',
     'visualizer',
     'voting',
+    'bot',
 ]
 
 BASEURL = 'http://localhost:8000'
