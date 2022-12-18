@@ -1,4 +1,4 @@
-from base.tests import BaseTestCase
+
 from base import mods
 from census.models import Census
 from mixnet.mixcrypt import ElGamal
@@ -6,13 +6,14 @@ from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
 from voting.models import Voting, Question, QuestionOption
 import visualizer.metrics as metrics
-
 from rest_framework.test import APIClient
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
+from base.tests import BaseTestCase
 class VisualizerTests(BaseTestCase):
     def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
         pk = v.pub_key
@@ -91,6 +92,20 @@ class VisualizerTests(BaseTestCase):
     def test_votacion_no_existente(self):
         response = self.client.get('/visualizer/999/')
         self.assertEqual(response.status_code, 404)
+
+    def test_vista_detalle(self):
+        v = self.create_voting()
+        response=self.client.get('/visualizer/' +str(v.id)+'/')
+        self.assertEqual(response.status_code,200)
+    def test_vista_detalle_Neg(self):
+        response=self.client.get('/visualizer/-1/')
+        self.assertEqual(response.status_code,404)
+    def test_vista_detalle_IdNoExiste(self):
+        response=self.client.get('/visualizer/100/')
+        self.assertEqual(response.status_code,404)
+    def test_vista_caracter(self):
+        response=self.client.get('/visualizer/abc/')
+        self.assertEqual(response.status_code,404)
         
     def test_num_votos(self):
         v = self.create_voting()
@@ -217,4 +232,4 @@ class VisualizerTests(BaseTestCase):
         num = metrics.finishedVotings()
         self.assertEquals(res, num)
 
-    
+
