@@ -3,27 +3,33 @@ from django.http import Http404
 
 from base import mods
 from visualizer import metrics, plots
-from telegram_bot import observer
+
+from .models import TelegramSubscription
 
 from django_telegrambot.apps import DjangoTelegramBot
 
+from telegram import Bot
 from telegram.update import Update
 from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
 from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
-from time import sleep
 
 import logging
 import os
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from voting.models import Voting
 
 logger = logging.getLogger(__name__)
 
 KEY = settings.TELEGRAM_APIKEY_BOT
 
+
 def main():
     dp = DjangoTelegramBot.dispatcher
-    events = observer.event_handler()
+
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('help', help))
     dp.add_handler(CommandHandler('getVotingInfo', getVotingInfo))
@@ -31,17 +37,41 @@ def main():
     dp.add_handler(CommandHandler('getAllVotingsInfo', getAllVotingsInfo))
     dp.add_handler(CommandHandler('getAllVotingsPlot', getAllVotingsPlot))
     dp.add_handler(CommandHandler('listVotings', listVotings))
-    dp.add_handler(CommandHandler('subscribe', events.subscribe))
-    dp.add_handler(CommandHandler('un-subscribe', events.unsubscribe))
+    dp.add_handler(CommandHandler('subscribe', subscribe))
+    dp.add_handler(CommandHandler('unsubscribe', unsubscribe))
     dp.add_handler(MessageHandler(Filters.command, unknown))  # Filters out unknown commands
     
     dp.add_handler(MessageHandler(Filters.text, unknown_text)) # Filters out unknown messages.
 
     dp.add_error_handler(error) # Error handler
 
-    while(True):
-        sleep(300)
-        events.check_status()
+def notify(bot, chatId, votingId):
+    voting = mods.get('voting', params={'id': votingId})[0]
+    name = voting['name']
+    desc = voting['desc']
+
+    votes = metrics.votesOfVoting(votingId)
+    abstentions = metrics.abstentions(votingId)
+
+    re = f'Información de la votación {votingId}\n'
+    re += f'Nombre: {name}\n'
+    if (desc == '' or desc == None):
+        re += 'Descripción: Esta votación no tiene descripción\n'
+    else:
+        re += f'Descripción: {desc}\n'
+        
+    re += f'Número de votos: {votes}\n'
+    re += f'Número de abstenciones: {abstentions}\n'
+
+    bot.send_message(chat_id=chatId, text=re)
+
+@receiver(post_save, sender=Voting)
+def update_stock(sender, instance, **kwargs):
+    bot = Bot(KEY)
+    if (instance.postproc is not None):
+        subscriptions = TelegramSubscription.objects.filter(voting_id=instance.pk)
+        for subscription in subscriptions:
+            notify(bot, subscription.chat_id, subscription.voting_id)
 
 def start(update: Update, context:CallbackContext):
 	update.message.reply_text(
@@ -59,6 +89,8 @@ def help(update:Update, context:CallbackContext):
         '   /getAllVotingsInfo: Muestra informacion general sobre todas las votaciones\n'
         '   /getAllVotingsPlot: Muestra informacion general sobre todas las votaciones en un gráfico\n'
         '   /listVotings: Lista todas las votaciones\n'
+        '   /subscribe <id>: Le subscribe para recibir actualizaciones de una votación\n'
+        '   /unsubscribe <id>: Cancela su subscripción para las actualizaciones de una votación\n'
     )    
 
 def getVotingInfo(update:Update, context:CallbackContext):
@@ -167,6 +199,29 @@ def listVotings(update:Update, context:CallbackContext):
         update.message.reply_text(re)
     except:
         raise Http404
+
+
+def subscribe(update:Update, context:CallbackContext):
+    try:
+        votingId = context.args[0]
+        chatId = context._chat_id_and_data[0]
+ 
+        subscription = TelegramSubscription(chat_id=chatId, voting_id=votingId)
+        subscription.save()
+
+        update.message.reply_text('Subscripción realizada con éxito. Espere hasta que finalice la votación para consultar los resultados')
+    except:
+        update.message.reply_text('Algo ha fallado')
+
+def unsubscribe(update:Update, context:CallbackContext):
+    try:
+        votingId = context.args[0]
+        chatId = context._chat_id_and_data[0]
+        TelegramSubscription.objects.filter(voting_id=votingId, chat_id=chatId).delete()
+        update.message.reply_text('Subscripción anulada. Ya no recibirá un mensaje al finalizar la votación')
+        print(TelegramSubscription.objects.all())
+    except:
+        update.message.reply_text('Algo ha fallado')
 
 def unknown(update:Update, context:CallbackContext):
 	update.message.reply_text('Lo siento, no reconozco el comando: '+
