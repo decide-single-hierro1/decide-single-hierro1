@@ -9,7 +9,7 @@ from mixnet.models import Auth
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from voting.models import Voting, Question, QuestionOption
-from . import telegrambot, observer
+from . import telegrambot
 
 from unittest.mock import Mock
 
@@ -277,7 +277,7 @@ class TelegramBotTests(BaseTestCase):
         mocked_context = Mock()
 
         mocked_context.args = [v.id]
-        mocked_update.message.chat.id = 1234
+        mocked_context._chat_id_and_data = [1234]
 
         telegrambot.subscribe(mocked_update, mocked_context)
 
@@ -293,11 +293,21 @@ class TelegramBotTests(BaseTestCase):
         mocked_context = Mock()
 
         mocked_context.args = [v.id]
-        mocked_update.message.chat.id = 1234
+        mocked_context._chat_id_and_data = [1234]
         #Need to subscribe first
         telegrambot.subscribe(mocked_update, mocked_context)
         telegrambot.unsubscribe(mocked_update,mocked_context)
 
         mocked_update.message.reply_text.assert_called_with('Subscripción anulada. Ya no recibirá un mensaje al finalizar la votación')
 
-        
+    def test_notify(self):
+        v = self.complete_voting()
+        mocked_bot = Mock()
+        telegrambot.notify(mocked_bot,1234,v.id)
+
+        mocked_bot.send_message.assert_called_with(chat_id=1234, text=f'Información de la votación {v.id}\n'
+            'Nombre: test voting\n'
+            'Descripción: Esta votación no tiene descripción\n'
+            'Número de votos: 10\n'
+            'Número de abstenciones: 1\n'
+        )
