@@ -40,3 +40,4 @@ DATABASES = {
 
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256
+TELEGRAM_APIKEY_BOT = '5896257584:AAH2krGA7MZuMRrPd-mrAiSDv2TCWiQ5PCM'
