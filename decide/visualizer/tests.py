@@ -98,9 +98,9 @@ class VisualizerTests(BaseTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        self.store_votes(v,5)
+        self.store_votes(v,4)
         num = metrics.votesOfVoting(v.id)
-        res = 25
+        res = 20
         self.assertEqual(res, num)
     
     def test_abstenciones(self):
